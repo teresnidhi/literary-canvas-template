@@ -1,9 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import heroImage from "@/assets/hero-bg.jpg";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -26,7 +29,7 @@ const Hero = () => {
           <Button 
             size="lg" 
             className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 py-6 text-lg"
-            onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
+            onClick={() => navigate("/contact")}
           >
             Join the Society
           </Button>
@@ -34,7 +37,7 @@ const Hero = () => {
             size="lg" 
             variant="outline" 
             className="bg-background/10 text-primary-foreground border-primary-foreground/30 hover:bg-background/20 backdrop-blur-sm font-semibold px-8 py-6 text-lg"
-            onClick={() => document.querySelector("#events")?.scrollIntoView({ behavior: "smooth" })}
+            onClick={() => navigate("/events")}
           >
             Discover Our Events
           </Button>

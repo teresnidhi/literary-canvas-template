@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
 import societyLogo from "@/assets/society-logo.png";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,21 +18,17 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { href: "#home", label: "Home" },
-    { href: "#about", label: "About Us" },
-    { href: "#team", label: "Our Team" },
-    { href: "#events", label: "Events & Projects" },
-    { href: "#gallery", label: "Gallery" },
-    { href: "#contact", label: "Contact" },
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About Us" },
+    { href: "/team", label: "Our Team" },
+    { href: "/events", label: "Events & Projects" },
+    { href: "/gallery", label: "Gallery" },
+    { href: "/contact", label: "Contact" },
   ];
 
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsMobileMenuOpen(false);
-    }
+  const isActive = (path: string) => {
+    if (path === "/") return location.pathname === "/";
+    return location.pathname === path;
   };
 
   return (
@@ -42,23 +40,26 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-3 group" onClick={(e) => scrollToSection(e, "#home")}>
+          <Link to="/" className="flex items-center gap-3 group">
             <img src={societyLogo} alt="Literary Society Logo" className="h-12 w-12 transition-transform group-hover:scale-105" />
             <span className="font-poppins font-semibold text-lg text-primary hidden sm:block">Literary Society</span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
-                href={link.href}
-                onClick={(e) => scrollToSection(e, link.href)}
-                className="text-foreground hover:text-accent font-medium transition-colors relative group"
+                to={link.href}
+                className={`font-medium transition-colors relative group ${
+                  isActive(link.href) ? "text-accent" : "text-foreground hover:text-accent"
+                }`}
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full"></span>
-              </a>
+                <span className={`absolute -bottom-1 left-0 h-0.5 bg-accent transition-all ${
+                  isActive(link.href) ? "w-full" : "w-0 group-hover:w-full"
+                }`}></span>
+              </Link>
             ))}
           </div>
 
@@ -78,14 +79,18 @@ const Navbar = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden py-4 border-t animate-fade-in-up">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
-                href={link.href}
-                onClick={(e) => scrollToSection(e, link.href)}
-                className="block py-3 text-foreground hover:text-accent hover:bg-secondary/50 px-4 rounded-md transition-colors"
+                to={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`block py-3 px-4 rounded-md transition-colors ${
+                  isActive(link.href)
+                    ? "text-accent bg-secondary/50"
+                    : "text-foreground hover:text-accent hover:bg-secondary/50"
+                }`}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
         )}
