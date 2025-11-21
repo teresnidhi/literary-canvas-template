@@ -1,16 +1,17 @@
 import { Facebook, Twitter, Instagram, Linkedin, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
 import societyLogo from "@/assets/society-logo.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
-    { label: "Home", href: "#home" },
-    { label: "About Us", href: "#about" },
-    { label: "Our Team", href: "#team" },
-    { label: "Events", href: "#events" },
-    { label: "Gallery", href: "#gallery" },
-    { label: "Contact", href: "#contact" },
+    { label: "Home", href: "/" },
+    { label: "About Us", href: "/about" },
+    { label: "Our Team", href: "/team" },
+    { label: "Events", href: "/events" },
+    { label: "Gallery", href: "/gallery" },
+    { label: "Contact", href: "/contact" },
   ];
 
   const socialLinks = [
@@ -21,24 +22,16 @@ const Footer = () => {
     { icon: Mail, href: "mailto:info@literarysociety.edu", label: "Email" },
   ];
 
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <footer className="bg-primary text-primary-foreground py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
           {/* Logo and Description */}
           <div>
-            <div className="flex items-center gap-3 mb-4">
+            <Link to="/" className="flex items-center gap-3 mb-4 w-fit">
               <img src={societyLogo} alt="Literary Society Logo" className="h-12 w-12" />
               <span className="font-poppins font-semibold text-xl">Literary Society</span>
-            </div>
+            </Link>
             <p className="text-primary-foreground/80 leading-relaxed">
               Fostering a love for literature and building a vibrant community of readers, writers, and literary enthusiasts.
             </p>
@@ -49,14 +42,13 @@ const Footer = () => {
             <h3 className="font-poppins font-semibold text-lg mb-4">Quick Links</h3>
             <nav className="grid grid-cols-2 gap-2">
               {quickLinks.map((link) => (
-                <a
+                <Link
                   key={link.href}
-                  href={link.href}
-                  onClick={(e) => scrollToSection(e, link.href)}
+                  to={link.href}
                   className="text-primary-foreground/80 hover:text-accent transition-colors"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
             </nav>
           </div>
